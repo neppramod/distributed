@@ -106,4 +106,9 @@ public class Patient implements Serializable {
     public void setTreatmentHistory(List<Treatment> treatmentHistory) {
         this.treatmentHistory = treatmentHistory;
     }
+
+    @Override
+    public String toString() {
+        return "Id: " + id + ", Name: " + name;
+    }
 }
