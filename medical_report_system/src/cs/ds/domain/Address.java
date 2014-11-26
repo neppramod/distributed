@@ -7,8 +7,6 @@ import java.io.Serializable;
 /**
  * Address: Address of Patient, Hospital etc
  */
-//@Entity
-//@Table(name = "address")
 public class Address implements Serializable {
 
     private Long id;
@@ -19,9 +17,6 @@ public class Address implements Serializable {
     private String state;
     private String country;
 
-    //@Id
-    //@GeneratedValue
-    //@Column(name="address_id")
     public Long getId() {
         return id;
     }

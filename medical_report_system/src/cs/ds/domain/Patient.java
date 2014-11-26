@@ -27,10 +27,6 @@ public class Patient implements Serializable {
     private String mothersName;
     private List<Treatment> treatmentHistory;
 
-    //@Id
-    //@GeneratedValue
-    //@Column(name="patient_id")
-
     public Long getId() {
         return id;
     }
@@ -55,8 +51,6 @@ public class Patient implements Serializable {
         this.dob = dob;
     }
 
-    //@OneToOne(cascade = CascadeType.ALL)
-    //@JoinColumn(name="address_dob_id")
     public Address getDobPlace() {
         return dobPlace;
     }
@@ -81,8 +75,6 @@ public class Patient implements Serializable {
         this.phone = phone;
     }
 
-    //@OneToOne(cascade = CascadeType.ALL)
-    //@JoinColumn(name="address_id")
     public Address getAddress() {
         return address;
     }
@@ -106,13 +98,7 @@ public class Patient implements Serializable {
     public void setMothersName(String mothersName) {
         this.mothersName = mothersName;
     }
-    /*
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(name="treatment_history_list",
-            joinColumns=@JoinColumn(name="patient_id"),
-            inverseJoinColumns=@JoinColumn(name="treatment_id")
-    )
-    */
+
     public List<Treatment> getTreatmentHistory() {
         return treatmentHistory;
     }

@@ -1,10 +1,5 @@
 package cs.ds.domain;
 
-
-/*
-import org.hibernate.annotations.CollectionOfElements;
-import javax.persistence.*;
-*/
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,8 +9,7 @@ import java.util.List;
 /**
  * Treatment: One instance of patient's treatment, including location of treatment files as list of treatmentReports
  */
-//@Entity
-//@Table(name = "treatment")
+
 public class Treatment implements Serializable {
     private Long id;
     private String title;
@@ -27,9 +21,6 @@ public class Treatment implements Serializable {
     private String descriptionOfTreatment;
     private List<String> treatmentReports = new ArrayList<String>();
 
-    //@Id
-    //@GeneratedValue
-    //@Column(name="treatment_id")
     public Long getId() {
         return id;
     }
@@ -62,8 +53,6 @@ public class Treatment implements Serializable {
         this.nameOfHospital = nameOfHospital;
     }
 
-    //@OneToOne(cascade = CascadeType.ALL)
-    //@JoinColumn(name="address_id")
     public Address getAddressOfHospital() {
         return addressOfHospital;
     }
@@ -96,14 +85,6 @@ public class Treatment implements Serializable {
         this.descriptionOfTreatment = descriptionOfTreatment;
     }
 
-    /*
-    @ElementCollection
-    @JoinTable(name="treatment_reports",
-            joinColumns = @JoinColumn(name="treatment_id") // References parent
-    )
-
-    @Column(name="report_uri", nullable=false)
-    */
     public List<String> getTreatmentReports() {
         return treatmentReports;
     }

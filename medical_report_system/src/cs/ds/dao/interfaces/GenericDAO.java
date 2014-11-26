@@ -4,6 +4,17 @@ import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.List;
 
+/**
+ * Generic class that implements generic dao interface
+ *
+ * @author pramod
+ *
+ * @param <T>
+ *            generic type, It is going to be casted to child type at runtime
+ * @param <ID>
+ *            Primary key type of child class
+ */
+
 public interface GenericDAO<T, ID extends Serializable> extends Serializable{
 
     T findById(ID id) throws RemoteException;

@@ -12,16 +12,13 @@ import java.io.Serializable;
 /**
  * Staff: Person who collects, modifiles, search Patient's treatment
  */
-//@Entity
-//@Table(name = "staff")
+
 public class Staff implements Serializable {
     private Long id;
     private String name;
     private String username;
     private String password;
 
-    //@Id
-    //@GeneratedValue
     public Long getId() {
         return id;
     }
