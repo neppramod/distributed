@@ -1,10 +1,11 @@
-package cs.ds.service.interfaces;
+package cs.ds.dao.interfaces;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.List;
 
-public interface GenericService<T, ID extends Serializable> extends Serializable{
+public interface GenericDAO<T, ID extends Serializable> extends Serializable{
+
     T findById(ID id) throws RemoteException;
 
     List<T> findAll() throws RemoteException;
@@ -15,8 +16,9 @@ public interface GenericService<T, ID extends Serializable> extends Serializable
 
     void update(T entity) throws RemoteException;
 
+    void delete(T entity) throws RemoteException;
+
     void merge(T entity) throws RemoteException;
 
     void delete(ID id) throws RemoteException;
 }
-
