@@ -1,19 +1,24 @@
 package cs.ds.jiniimpl.clientservice;
 
 import cs.ds.dao.interfaces.PatientDAO;
-import net.jini.core.lookup.ServiceRegistrar;
-import net.jini.core.lookup.ServiceTemplate;
+import cs.ds.service.PatientServiceImpl;
+import cs.ds.service.interfaces.PatientService;
+import net.jini.core.lease.Lease;
+import net.jini.core.lookup.*;
 import net.jini.discovery.DiscoveryEvent;
 import net.jini.discovery.DiscoveryListener;
 import net.jini.discovery.LookupDiscovery;
+import net.jini.lease.LeaseListener;
+import net.jini.lease.LeaseRenewalEvent;
+import net.jini.lease.LeaseRenewalManager;
 
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 
-public class ClientServiceServer implements DiscoveryListener {
-    //protected LeaseRenewalManager leaseManager = new LeaseRenewalManager();
-    //protected ServiceID serviceID = null;
-    //protected PatientService patientService = null;
+public class ClientServiceServer implements DiscoveryListener, LeaseListener {
+    protected LeaseRenewalManager leaseManager = new LeaseRenewalManager();
+    protected ServiceID serviceID = null;
+    protected PatientService patientService = null;
     protected PatientDAO patientDAO = null;
 
     public static void main(String[] args) {
@@ -25,7 +30,7 @@ public class ClientServiceServer implements DiscoveryListener {
         } catch(InterruptedException e) {}
 
         // This is for service
-        /*
+
         Object keepAlive = new Object();
 
         // Keep this server running
@@ -34,7 +39,7 @@ public class ClientServiceServer implements DiscoveryListener {
                 keepAlive.wait();
             } catch(InterruptedException e) {}
         }
-        */
+
     }
 
     public ClientServiceServer() {
@@ -44,7 +49,7 @@ public class ClientServiceServer implements DiscoveryListener {
         try {
             discover = new LookupDiscovery(LookupDiscovery.ALL_GROUPS);
         } catch (Exception e) {
-            System.out.println("Discovery failed " + e.toString());
+            System.out.println("ClientServiceServer: Discovery failed " + e.toString());
             System.exit(1);
         }
 
@@ -58,31 +63,66 @@ public class ClientServiceServer implements DiscoveryListener {
         ServiceTemplate template = new ServiceTemplate(null, classes, null);
 
         for (int n = 0; n < registrars.length; n++) {
-            System.out.println("ClientServiceServer: Look service found");
+            System.out.println("ClientServiceServer: Lookup service found");
             ServiceRegistrar registrar = registrars[n];
 
             try {
                 patientDAO = (PatientDAO) registrar.lookup(template);
             } catch (RemoteException e) {
-                System.out.println("PatientDAO null");
+                System.out.println("ClientServiceServer: PatientDAO null");
                 continue;
             }
 
-            // Use patientDAO object we got from server
+            System.out.println("P1");
+
             try {
-                System.out.println("Patient: " + patientDAO.findById(1L));
+                System.out.println("ClientServiceServer: Patient: " + patientDAO.findById(1L));
+
             } catch (RemoteException e) {
                 e.printStackTrace();
                 continue;
             }
 
             // Should I exit now or not, Have to look at this later
-            System.exit(0);
+
+            if (patientDAO != null)
+                break;
+        }
+
+        System.out.println("Found patientDAO now registering the patient service");
+
+        // Use patientDAO object we got from server
+        if (patientDAO != null) {
+            patientService = new PatientServiceImpl(patientDAO);
+        }
+
+        for (int n = 0; n < registrars.length; n++) {
+            ServiceRegistrar registrar = registrars[n];
+            // After we get the patientDAO we can register patientService
+            ServiceItem item = new ServiceItem(serviceID, patientService, null);
+            ServiceRegistration registration = null;
+
+            try {
+                registration = registrar.register(item, Lease.FOREVER);
+            } catch(RemoteException e) {
+                System.out.println("ClientServiceServer: PatientService registration exception: " + e.toString());
+                continue;
+            }
+
+            System.out.println("ClientServiceServer: PatientService registered with id " + registration.getServiceID());
+
+            // set lease renewal in place
+            leaseManager.renewUntil(registration.getLease(), Lease.FOREVER, this);
         }
     }
 
     @Override
     public void discarded(DiscoveryEvent discoveryEvent) {
 
+    }
+
+    @Override
+    public void notify(LeaseRenewalEvent leaseRenewalEvent) {
+        System.out.println("ClientServiceServer: Patient Service: Lease expired " + leaseRenewalEvent.toString());
     }
 }
