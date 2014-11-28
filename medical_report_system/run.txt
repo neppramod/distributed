@@ -31,3 +31,15 @@ cd ~/ds/final_project/src/git_ds_jini/medical_report_system/out/production/medic
 
 java -Djava.security.policy=../../../all_rmi_lib/jsk-all.policy cs/ds/jiniimpl/client/PatientClient
 
+7. Creating jar (Make the project before running these commands).
+
+a. Create jar for dataservice (only needs DOA interfaces).
+
+cd ~/git_ds_jini/medical_report_system/out/production/medical_report_system
+jar cf ~/git_ds_jini/medical_report_system/host_this/data_service-dl.jar cs/ds/dao/interfaces/
+
+b. Create jar for clientservice (needs DAO, Service interfaces)
+jar cf ~/git_ds_jini/medical_report_system/host_this/client_service-dl.jar cs/ds/dao/interfaces/ cs/ds/service/interfaces/
+
+
+

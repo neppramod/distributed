@@ -1,5 +1,9 @@
 package cs.ds.jiniimpl.client;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 
@@ -58,9 +62,30 @@ public class PatientClient implements DiscoveryListener{
             try {
                 System.out.println("Client: Found patientService");
                 System.out.println(patientService.findById(1L));
+
+                // Lets get a file
+                byte[] fileData = patientService.downloadFile("op.jpg");
+
+
+
+                // Give new file name
+                String newFileName = "op_" + System.currentTimeMillis() + ".jpg";
+                File file = new File(newFileName);
+                BufferedOutputStream output = new
+                        BufferedOutputStream(new FileOutputStream(file.getName()));
+
+                System.out.println("Getting file: (with changed name after adding timestamp ) : " +
+                        file.getName());
+
+                output.write(fileData, 0, fileData.length);
+                output.flush();
+                output.close();
+
             } catch(RemoteException e) {
                 e.printStackTrace();
                 continue;
+            } catch(Exception fe) {
+                System.out.println("File not found/Input exception: " + fe.toString());
             }
 
             // Should I exit now or not, Have to look at this later
