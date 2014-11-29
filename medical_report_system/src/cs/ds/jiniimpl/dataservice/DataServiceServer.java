@@ -2,9 +2,12 @@ package cs.ds.jiniimpl.dataservice;
 
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
+import java.util.List;
 
 import cs.ds.dao.PatientDAOImpl;
 import cs.ds.dao.interfaces.PatientDAO;
+import cs.ds.domain.Patient;
+import cs.ds.domain.Patients;
 import net.jini.discovery.LookupDiscovery;
 import net.jini.discovery.DiscoveryListener;
 import net.jini.discovery.DiscoveryEvent;
@@ -51,6 +54,8 @@ public class DataServiceServer implements  DiscoveryListener, LeaseListener{
 
         discover.addDiscoveryListener(this);
     }
+
+
 
     @Override
     public void discovered(DiscoveryEvent discoveryEvent) {

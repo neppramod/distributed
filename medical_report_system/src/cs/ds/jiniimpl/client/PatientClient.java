@@ -6,7 +6,16 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
+import cs.ds.domain.Address;
+import cs.ds.domain.Patient;
+import cs.ds.domain.Patients;
+import cs.ds.domain.Treatment;
 import cs.ds.service.interfaces.PatientService;
 import net.jini.discovery.LookupDiscovery;
 import net.jini.discovery.DiscoveryListener;
@@ -58,8 +67,11 @@ public class PatientClient implements DiscoveryListener{
                 continue;
             }
 
+
+
             // Use patientService object we got from server
             try {
+
                 System.out.println("Client: Found patientService");
                 System.out.println(patientService.findById(1L));
 
@@ -88,6 +100,15 @@ public class PatientClient implements DiscoveryListener{
                 System.out.println("File not found/Input exception: " + fe.toString());
             }
 
+            try {
+                System.out.println("Welcome to the Medical Records System.");
+                System.out.println("");
+                clientMenu(patientService);
+            } catch(Exception ex) {
+                System.out.println("Exception in creating client menu: " + ex);
+                //continue;
+            }
+
             // Should I exit now or not, Have to look at this later
             System.exit(0);
         }
@@ -96,5 +117,132 @@ public class PatientClient implements DiscoveryListener{
     @Override
     public void discarded(DiscoveryEvent discoveryEvent) {
 
+    }
+
+    public void clientMenu(PatientService patientService) {
+        Scanner in = new Scanner(System.in);
+        int menuChoice = 0;
+
+        Patients patientList = new Patients();
+        patientList.setPatientsList(patientService.readPatients());
+
+        while(menuChoice != 5) {
+            clientMenuText();
+            menuChoice = in.nextInt();
+            switch(menuChoice) {
+                case 1:
+                    patientService.addPatient(patientList, clientAddPatient());
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    patientService.removePatient(patientList, clientAddPatient());  //use after add, sample patient
+                    break;
+                case 4:
+                    patientService.printPatients();
+                    break;
+                case 5:
+                    System.out.println("Exiting the application.");
+                    break;
+                default:
+                    System.out.println("Invalid menu option chosen.");
+            }
+            System.out.println("");
+        }
+    }
+
+    public void clientMenuText() {
+        System.out.println("Please choose an option below:");
+        System.out.println("");
+        System.out.println("1 - Add a patient");
+        System.out.println("2 - Search for a patient");
+        System.out.println("3 - Remove a patient");
+        System.out.println("4 - List all patients");
+        System.out.println("5 - Exit the application");
+    }
+
+    public Patient clientAddPatient() {
+        Address hospitalAddress = new Address();
+        hospitalAddress.setId(1L);
+        hospitalAddress.setAppartmentNo("Central Hospital Apartment");
+        hospitalAddress.setCity("Johnson City");
+        hospitalAddress.setCountry("US");
+        hospitalAddress.setState("TN");
+        hospitalAddress.setStreet("Seminole Drv");
+        hospitalAddress.setZipCode("33434");
+
+        Address birthAddress = new Address();
+        birthAddress.setId(2L);
+        birthAddress.setAppartmentNo("Outer hospital");
+        birthAddress.setCity("Bristol");
+        birthAddress.setCountry("Canada");
+        birthAddress.setState("CN");
+        birthAddress.setStreet("Long Drv");
+        birthAddress.setZipCode("23434");
+
+        Address currentAddress = new Address();
+        currentAddress.setId(3L);
+        currentAddress.setAppartmentNo("234");
+        currentAddress.setCity("Far city");
+        currentAddress.setCountry("Moon");
+        currentAddress.setState("Creator");
+        currentAddress.setStreet("No street defined");
+        currentAddress.setZipCode("334234");
+
+        // Treatment1
+        Treatment patientTreatment = new Treatment();
+        patientTreatment.setId(1L);
+        patientTreatment.setTitle("Severe Heart disease");
+        patientTreatment.setNameofDoctor("Dr. Superman");
+        patientTreatment.setNameOfHospital("Finest medical hospital");
+        patientTreatment.setAddressOfHospital(hospitalAddress);
+        patientTreatment.setSymptoms("Heart attack");
+        patientTreatment.setDescriptionOfTreatment("Did a surgery");
+
+        List<String> treatmentFiles = new ArrayList<String>();
+        treatmentFiles.add("op.jpg");
+        treatmentFiles.add("soa.jpg");
+        treatmentFiles.add("nar.jpg");
+        patientTreatment.setTreatmentReports(treatmentFiles);
+
+        // Treatment2
+        Treatment patient1Treatment = new Treatment();
+        patient1Treatment.setId(1L);
+        patient1Treatment.setTitle("Severe Lungs disease");
+        patient1Treatment.setNameofDoctor("Dr. Octopos");
+        patient1Treatment.setNameOfHospital("Finest lungs hospital");
+        patient1Treatment.setAddressOfHospital(hospitalAddress);
+        patient1Treatment.setSymptoms("Lungs attack");
+        patient1Treatment.setDescriptionOfTreatment("Lungs surgery");
+
+        List<String> treatment1Files = new ArrayList<String>();
+        treatment1Files.add("op1.jpg");
+        treatment1Files.add("soa1.jpg");
+        treatment1Files.add("nar1.jpg");
+        patient1Treatment.setTreatmentReports(treatment1Files);
+
+
+        Patient patient1 = new Patient();
+        patient1.setId(5L);
+        patient1.setName("Harry Potter");
+        patient1.setAddress(currentAddress);
+        patient1.setDobPlace(birthAddress);
+
+        try {
+            patient1.setDob(new SimpleDateFormat("M-d-yyyy").parse("05-21-1923"));
+            patientTreatment.setDateOfTreatment(new SimpleDateFormat("M-d-yyyy").parse("05-17-1945"));
+            patient1Treatment.setDateOfTreatment(new SimpleDateFormat("M-d-yyyy").parse("02-15-1935"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        List<Treatment> treatmentList = new ArrayList<Treatment>();
+        treatmentList.add(patientTreatment);
+        treatmentList.add(patient1Treatment);
+
+        patient1.setTreatmentHistory(treatmentList);
+
+        //now return the patient
+        return patient1;
     }
 }

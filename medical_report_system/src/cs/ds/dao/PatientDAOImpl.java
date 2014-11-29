@@ -1,13 +1,15 @@
 package cs.ds.dao;
 
-
+import com.thoughtworks.xstream.XStream;
 import cs.ds.dao.interfaces.PatientDAO;
 import cs.ds.domain.Patient;
+import cs.ds.domain.Patients;
+import cs.ds.domain.Treatment;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.*;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PatientDAOImpl extends GenericDAOImpl<Patient, Long> implements PatientDAO{
 
@@ -28,4 +30,109 @@ public class PatientDAOImpl extends GenericDAOImpl<Patient, Long> implements Pat
             return null;
         }
     }
+
+    @Override
+    public List<Patient> readPatients() {
+        XStream readPatientStream = new XStream();
+        List<Patient> patients = new ArrayList<Patient>();
+
+
+        // For correctly getting the object
+        Patients patientsObj = new Patients();
+        patientsObj.setPatientsList(new ArrayList<Patient>());
+
+
+        readPatientStream.alias("patient", Patient.class);
+        readPatientStream.alias("treatment", Treatment.class);
+        readPatientStream.alias("patientsList", patientsObj.getPatientsList().getClass());
+
+        try {
+
+            System.out.println("Trying to get patients");
+
+            ObjectInputStream in = readPatientStream.createObjectInputStream(new FileInputStream(new File("patients.xml")));
+
+            System.out.println("After ObjectInputStream");
+
+            //patients = (List<Patient>) in.readObject();
+
+
+            Patient patient = null;
+            while ((patient = (Patient) in.readObject()) != null)
+                patients.add(patient);
+
+            /*
+            patient = (Patient) in.readObject();
+
+            System.out.println("Pt: " + patient);
+
+            patients.add(patient);
+
+            patient = (Patient) in.readObject();
+            patients.add(patient);
+
+            System.out.println("Pt: 2" + patient);
+
+            // close the reading
+            //in.close();
+            */
+
+            System.out.println("After casting to patients ");
+
+        } catch (EOFException e) {
+            System.out.println("File end reached");
+        }
+        catch (Exception e) {   // Any other exception
+            e.printStackTrace();
+        }
+
+        return patients;
+    }
+
+    public void writePatients(Patients patients) {
+        XStream writePatientStream = new XStream();
+
+        writePatientStream.alias("patient", Patient.class);
+        writePatientStream.alias("treatment", Treatment.class);
+
+        try {
+            PrintWriter out = new PrintWriter("patients.xml");
+
+            System.out.println("Saving patients.xml to file");
+            out.println(writePatientStream.toXML(patients.getPatientsList()));
+            out.close();
+
+        } catch (Exception ex) {
+            System.out.println("File write exception: " + ex);
+        }
+    }
+
+    @Override
+    public void addPatient(Patients patients, Patient newPatient) {
+        if (!patients.getPatientsList().contains(newPatient)) {
+            patients.addPatient(newPatient);
+
+            // Save it back to xml
+            writePatients(patients);
+        } else {
+            System.out.println("Patient already exists in xml file.");
+        }
+    }
+
+    @Override
+    public void removePatient(Patients patients, Patient removedPatient) {
+        patients.removePatient(removedPatient);
+
+        // Save it back to xml
+        writePatients(patients);
+    }
+
+    @Override
+    public void printPatients() {
+        for (Patient p: readPatients()) {
+            System.out.println(p);
+        }
+    }
+
+
 }

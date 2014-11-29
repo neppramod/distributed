@@ -111,4 +111,10 @@ public class Patient implements Serializable {
     public String toString() {
         return "Id: " + id + ", Name: " + name;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        Patient p = (Patient) o;
+        return p.getId() == this.id;
+    }
 }

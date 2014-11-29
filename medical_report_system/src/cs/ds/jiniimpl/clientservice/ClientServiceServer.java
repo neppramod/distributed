@@ -73,7 +73,6 @@ public class ClientServiceServer implements DiscoveryListener, LeaseListener {
                 continue;
             }
 
-            System.out.println("P1");
 
             try {
                 System.out.println("ClientServiceServer: Patient: " + patientDAO.findById(1L));
