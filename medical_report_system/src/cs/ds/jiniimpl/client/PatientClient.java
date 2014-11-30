@@ -148,6 +148,7 @@ public class PatientClient implements DiscoveryListener{
                         patientService.addPatient(patientList, clientAddPatient());
                         break;
                     case 2:
+                        System.out.print("\nId: ");
                         patientId = in.nextLong();
                         searchAndPrintPatient(patientId);
                         break;
