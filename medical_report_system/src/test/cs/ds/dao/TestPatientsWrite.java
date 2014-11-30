@@ -184,6 +184,9 @@ public class TestPatientsWrite {
         List<Patient> patientsList = new ArrayList<Patient>();
         patientsList.add(patient1);
         patientsList.add(patient2);
+        patientsList.add(getNewPatient(3L, "Sam"));
+        patientsList.add(getNewPatient(4L, "Harry"));
+        patientsList.add(getNewPatient(5L, "Tom"));
 
         Patients patients = new Patients();
         patients.setPatientsList(patientsList);
@@ -208,6 +211,7 @@ public class TestPatientsWrite {
         } catch (Exception ex) {
             System.out.println("File write exception: " + ex);
         }
+
 
         // Read from file
         XStream xstream2 = new XStream();
@@ -268,6 +272,84 @@ public class TestPatientsWrite {
         } catch(Exception ex) {
             System.out.println("File read exception: " + ex);
         }
+    }
+
+    private static Patient getNewPatient(Long id, String name) {
+        Address hospital2Address = new Address();
+        hospital2Address.setId(1L);
+        hospital2Address.setAppartmentNo("Central Hospital Apartment");
+        hospital2Address.setCity("Johnson City");
+        hospital2Address.setCountry("US");
+        hospital2Address.setState("TN");
+        hospital2Address.setStreet("Seminole Drv");
+        hospital2Address.setZipCode("33434");
+
+        Address birth2Address = new Address();
+        birth2Address.setId(2L);
+        birth2Address.setAppartmentNo("Outer hospital");
+        birth2Address.setCity("Bristol");
+        birth2Address.setCountry("Canada");
+        birth2Address.setState("CN");
+        birth2Address.setStreet("Long Drv");
+        birth2Address.setZipCode("23434");
+
+        Address current2Address = new Address();
+        current2Address.setId(3L);
+        current2Address.setAppartmentNo("234");
+        current2Address.setCity("Far city");
+        current2Address.setCountry("Moon");
+        current2Address.setState("Creator");
+        current2Address.setStreet("No street defined");
+        current2Address.setZipCode("334234");
+
+        // Treatment1
+        Treatment patient2Treatment = new Treatment();
+        patient2Treatment.setId(1L);
+        patient2Treatment.setTitle("Severe Heart disease");
+        patient2Treatment.setNameofDoctor("Dr. Superman");
+        patient2Treatment.setNameOfHospital("Finest medical hospital");
+        patient2Treatment.setAddressOfHospital(hospital2Address);
+        patient2Treatment.setSymptoms("Heart attack");
+        patient2Treatment.setDescriptionOfTreatment("Did a surgery");
+
+        List<String> treatment2Files = new ArrayList<String>();
+        treatment2Files.add("op.jpg");
+        treatment2Files.add("soa.jpg");
+        treatment2Files.add("nar.jpg");
+        patient2Treatment.setTreatmentReports(treatment2Files);
+
+        // Treatment2
+        Treatment patient3Treatment = new Treatment();
+        patient3Treatment.setId(1L);
+        patient3Treatment.setTitle("Severe Lungs disease");
+        patient3Treatment.setNameofDoctor("Dr. Octopos");
+        patient3Treatment.setNameOfHospital("Finest lungs hospital");
+        patient3Treatment.setAddressOfHospital(hospital2Address);
+        patient3Treatment.setSymptoms("Lungs attack");
+        patient3Treatment.setDescriptionOfTreatment("Lungs surgery");
+
+        List<String> treatment3Files = new ArrayList<String>();
+        treatment3Files.add("op1.jpg");
+        treatment3Files.add("soa1.jpg");
+        treatment3Files.add("nar1.jpg");
+        patient3Treatment.setTreatmentReports(treatment3Files);
+
+
+        Patient patient2 = new Patient();
+        patient2.setId(id);
+        patient2.setName(name);
+        patient2.setAddress(current2Address);
+        patient2.setDobPlace(birth2Address);
+
+        try {
+            patient2.setDob(new SimpleDateFormat("M-d-yyyy").parse("05-21-1923"));
+            patient2Treatment.setDateOfTreatment(new SimpleDateFormat("M-d-yyyy").parse("05-17-1945"));
+            patient3Treatment.setDateOfTreatment(new SimpleDateFormat("M-d-yyyy").parse("02-15-1935"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return patient2;
     }
 
     public static Patient findPatientById(Long id, List<Patient> patientList) {

@@ -52,32 +52,18 @@ public class PatientDAOImpl extends GenericDAOImpl<Patient, Long> implements Pat
 
             ObjectInputStream in = readPatientStream.createObjectInputStream(new FileInputStream(new File("patients.xml")));
 
-            System.out.println("After ObjectInputStream");
+            //System.out.println("After ObjectInputStream");
 
-            //patients = (List<Patient>) in.readObject();
+            patients = (List<Patient>) in.readObject();
 
 
+            /*
             Patient patient = null;
             while ((patient = (Patient) in.readObject()) != null)
                 patients.add(patient);
-
-            /*
-            patient = (Patient) in.readObject();
-
-            System.out.println("Pt: " + patient);
-
-            patients.add(patient);
-
-            patient = (Patient) in.readObject();
-            patients.add(patient);
-
-            System.out.println("Pt: 2" + patient);
-
-            // close the reading
-            //in.close();
             */
 
-            System.out.println("After casting to patients ");
+            System.out.println("Read patients from xml file patients.xml");
 
         } catch (EOFException e) {
             System.out.println("File end reached");
@@ -94,6 +80,7 @@ public class PatientDAOImpl extends GenericDAOImpl<Patient, Long> implements Pat
 
         writePatientStream.alias("patient", Patient.class);
         writePatientStream.alias("treatment", Treatment.class);
+        writePatientStream.alias("patientsList", patients.getPatientsList().getClass());
 
         try {
             PrintWriter out = new PrintWriter("patients.xml");

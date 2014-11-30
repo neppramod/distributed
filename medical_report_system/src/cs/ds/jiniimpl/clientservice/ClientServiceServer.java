@@ -74,6 +74,7 @@ public class ClientServiceServer implements DiscoveryListener, LeaseListener {
             }
 
 
+            /*
             try {
                 System.out.println("ClientServiceServer: Patient: " + patientDAO.findById(1L));
 
@@ -81,11 +82,14 @@ public class ClientServiceServer implements DiscoveryListener, LeaseListener {
                 e.printStackTrace();
                 continue;
             }
+            */
 
             // Should I exit now or not, Have to look at this later
 
-            if (patientDAO != null)
+            if (patientDAO != null) {
+                System.out.println("Found patientDAO. Good to go !!");
                 break;
+            }
         }
 
         System.out.println("Found patientDAO now registering the patient service");
