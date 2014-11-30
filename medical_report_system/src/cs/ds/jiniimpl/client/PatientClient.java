@@ -26,6 +26,8 @@ import net.jini.core.lookup.ServiceTemplate;
 
 public class PatientClient implements DiscoveryListener{
     protected PatientService patientService;
+    private final String REPORT_DIR = "/home/dell/PATIENT_REPORTS/";
+    private final String SERVER_REPORT_DIR = "reports" + File.separator;
 
     public static void main(String[] args) {
         new PatientClient();
@@ -80,38 +82,6 @@ public class PatientClient implements DiscoveryListener{
             }
 
 
-
-            // Use patientService object we got from server
-            try {
-
-                System.out.println("Client: Found patientService");
-                System.out.println(patientService.findById(1L));
-
-                // Lets get a file
-                byte[] fileData = patientService.downloadFile("op.jpg");
-
-
-
-                // Give new file name
-                String newFileName = "op_" + System.currentTimeMillis() + ".jpg";
-                File file = new File(newFileName);
-                BufferedOutputStream output = new
-                        BufferedOutputStream(new FileOutputStream(file.getName()));
-
-                System.out.println("Getting file: (with changed name after adding timestamp ) : " +
-                        file.getName());
-
-                output.write(fileData, 0, fileData.length);
-                output.flush();
-                output.close();
-
-            } catch(RemoteException e) {
-                e.printStackTrace();
-                continue;
-            } catch(Exception fe) {
-                System.out.println("File not found/Input exception: " + fe.toString());
-            }
-
             try {
                 System.out.println("Welcome to the Medical Records System.");
                 System.out.println("");
@@ -139,7 +109,7 @@ public class PatientClient implements DiscoveryListener{
         Patients patientList = new Patients();
         patientList.setPatientsList(patientService.readPatients());
 
-        while(menuChoice != 5) {
+        while(menuChoice != 6) {
             try {
                 clientMenuText();
                 menuChoice = in.nextInt();
@@ -159,6 +129,11 @@ public class PatientClient implements DiscoveryListener{
                         patientService.printPatients();
                         break;
                     case 5:
+                        System.out.print("\nId: ");
+                        patientId = in.nextLong();
+                        downloadReportsForPatient(patientId);
+                        break;
+                    case 6:
                         System.out.println("Exiting the application.");
                         break;
                     default:
@@ -169,6 +144,81 @@ public class PatientClient implements DiscoveryListener{
                 System.out.println("Sorry!! You had to enter a number. Try again. Exiting.. ");
                 break;
             }
+        }
+    }
+
+    public void clientMenuText() {
+        System.out.println("Please choose an option below:");
+        System.out.println("");
+        System.out.println("1 - Add a patient");
+        System.out.println("2 - Search for a patient");
+        System.out.println("3 - Remove a patient");
+        System.out.println("4 - List all patients");
+        System.out.println("5 - Download reports for a patient");
+        System.out.println("6 - Exit the application");
+    }
+
+    public void downloadReportsForPatient(Long id) {
+        Patient patient = patientService.findPatientById(id);
+
+        if (patient != null) {
+            System.out.println("Downloading reports for " + patient.getName());
+
+            List<Treatment> treatmentList = patient.getTreatmentHistory();
+
+
+            // First create directory for the patient, if it does not exist
+            File patientDir = new File(REPORT_DIR+patient.getId());
+            if (!patientDir.exists())
+                patientDir.mkdir();
+
+            if (treatmentList.size() < 1) {
+                System.out.println("Patient does not contain any treatment history");
+            } else {
+                for (Treatment t: treatmentList) {
+                    List<String> reports = t.getTreatmentReports();
+
+                    if (reports.size() < 1) {
+                        System.out.println("Patient does not contain any reports for this treatment");
+                    } else {
+
+                        // Create directory for each treatment and download reports inside that
+                        String treatmentDirPath = REPORT_DIR+patient.getId()+File.separator+t.getId();
+                        File treatmentDir = new File(treatmentDirPath);
+                        if(!treatmentDir.exists())
+                            treatmentDir.mkdir();
+
+                        // Once we have the file we can download all the reports to that directory
+                        for(String report : reports) {
+                            // Get the file
+                            try {
+                                byte[] fileData = patientService.downloadFile(SERVER_REPORT_DIR + patient.getId() + File.separator + t.getId() + File.separator + report);
+
+                                // Download to this name
+                                String downloadFileName = treatmentDirPath + File.separator + report;
+                                File downloadFile = new File(downloadFileName);
+                                BufferedOutputStream output = new
+                                        BufferedOutputStream(new FileOutputStream(downloadFileName));
+
+                                System.out.println("Getting report: " + downloadFile.getName());
+                                output.write(fileData, 0, fileData.length);
+                                output.flush();
+                                output.close();
+
+                            } catch (RemoteException e) {
+                                e.printStackTrace();
+                                continue;
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                    }
+                }
+            }
+
+        } else {
+            System.out.println("Could not find patient with id " + id);
         }
     }
 
@@ -227,15 +277,7 @@ public class PatientClient implements DiscoveryListener{
         }
     }
 
-    public void clientMenuText() {
-        System.out.println("Please choose an option below:");
-        System.out.println("");
-        System.out.println("1 - Add a patient");
-        System.out.println("2 - Search for a patient");
-        System.out.println("3 - Remove a patient");
-        System.out.println("4 - List all patients");
-        System.out.println("5 - Exit the application");
-    }
+
 
     public Patient clientAddPatient() {
         Address hospitalAddress = new Address();
@@ -283,7 +325,7 @@ public class PatientClient implements DiscoveryListener{
 
         // Treatment2
         Treatment patient1Treatment = new Treatment();
-        patient1Treatment.setId(1L);
+        patient1Treatment.setId(2L);
         patient1Treatment.setTitle("Severe Lungs disease");
         patient1Treatment.setNameofDoctor("Dr. Octopos");
         patient1Treatment.setNameOfHospital("Finest lungs hospital");

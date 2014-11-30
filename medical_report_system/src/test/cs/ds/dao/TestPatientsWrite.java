@@ -62,7 +62,7 @@ public class TestPatientsWrite {
 
         // Treatment2
         Treatment patient1Treatment = new Treatment();
-        patient1Treatment.setId(1L);
+        patient1Treatment.setId(2L);
         patient1Treatment.setTitle("Severe Lungs disease");
         patient1Treatment.setNameofDoctor("Dr. Octopos");
         patient1Treatment.setNameOfHospital("Finest lungs hospital");
@@ -146,7 +146,7 @@ public class TestPatientsWrite {
 
         // Treatment2
         Treatment patient3Treatment = new Treatment();
-        patient3Treatment.setId(1L);
+        patient3Treatment.setId(2L);
         patient3Treatment.setTitle("Severe Lungs disease");
         patient3Treatment.setNameofDoctor("Dr. Octopos");
         patient3Treatment.setNameOfHospital("Finest lungs hospital");
@@ -184,9 +184,9 @@ public class TestPatientsWrite {
         List<Patient> patientsList = new ArrayList<Patient>();
         patientsList.add(patient1);
         patientsList.add(patient2);
-        patientsList.add(getNewPatient(3L, "Sam"));
-        patientsList.add(getNewPatient(4L, "Harry"));
-        patientsList.add(getNewPatient(5L, "Tom"));
+        //patientsList.add(getNewPatient(3L, "Sam"));
+        //patientsList.add(getNewPatient(4L, "Harry"));
+        //patientsList.add(getNewPatient(5L, "Tom"));
 
         Patients patients = new Patients();
         patients.setPatientsList(patientsList);
@@ -320,7 +320,7 @@ public class TestPatientsWrite {
 
         // Treatment2
         Treatment patient3Treatment = new Treatment();
-        patient3Treatment.setId(1L);
+        patient3Treatment.setId(2L);
         patient3Treatment.setTitle("Severe Lungs disease");
         patient3Treatment.setNameofDoctor("Dr. Octopos");
         patient3Treatment.setNameOfHospital("Finest lungs hospital");

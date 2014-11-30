@@ -47,7 +47,7 @@
           </treatmentReports>
         </treatment>
         <treatment>
-          <id>1</id>
+          <id>2</id>
           <title>Severe Lungs disease</title>
           <nameofDoctor>Dr. Octopos</nameofDoctor>
           <nameOfHospital>Finest lungs hospital</nameOfHospital>
@@ -110,7 +110,7 @@
           </treatmentReports>
         </treatment>
         <treatment>
-          <id>1</id>
+          <id>2</id>
           <title>Severe Lungs disease</title>
           <nameofDoctor>Dr. Octopos</nameofDoctor>
           <nameOfHospital>Finest lungs hospital</nameOfHospital>
@@ -125,75 +125,6 @@
           </treatmentReports>
         </treatment>
       </treatmentHistory>
-    </patient>
-    <patient>
-      <id>3</id>
-      <name>Sam</name>
-      <dob>1923-05-21 04:00:00.0 UTC</dob>
-      <dobPlace>
-        <id>2</id>
-        <street>Long Drv</street>
-        <appartmentNo>Outer hospital</appartmentNo>
-        <city>Bristol</city>
-        <zipCode>23434</zipCode>
-        <state>CN</state>
-        <country>Canada</country>
-      </dobPlace>
-      <address>
-        <id>3</id>
-        <street>No street defined</street>
-        <appartmentNo>234</appartmentNo>
-        <city>Far city</city>
-        <zipCode>334234</zipCode>
-        <state>Creator</state>
-        <country>Moon</country>
-      </address>
-    </patient>
-    <patient>
-      <id>4</id>
-      <name>Harry</name>
-      <dob>1923-05-21 04:00:00.0 UTC</dob>
-      <dobPlace>
-        <id>2</id>
-        <street>Long Drv</street>
-        <appartmentNo>Outer hospital</appartmentNo>
-        <city>Bristol</city>
-        <zipCode>23434</zipCode>
-        <state>CN</state>
-        <country>Canada</country>
-      </dobPlace>
-      <address>
-        <id>3</id>
-        <street>No street defined</street>
-        <appartmentNo>234</appartmentNo>
-        <city>Far city</city>
-        <zipCode>334234</zipCode>
-        <state>Creator</state>
-        <country>Moon</country>
-      </address>
-    </patient>
-    <patient>
-      <id>5</id>
-      <name>Tom</name>
-      <dob>1923-05-21 04:00:00.0 UTC</dob>
-      <dobPlace>
-        <id>2</id>
-        <street>Long Drv</street>
-        <appartmentNo>Outer hospital</appartmentNo>
-        <city>Bristol</city>
-        <zipCode>23434</zipCode>
-        <state>CN</state>
-        <country>Canada</country>
-      </dobPlace>
-      <address>
-        <id>3</id>
-        <street>No street defined</street>
-        <appartmentNo>234</appartmentNo>
-        <city>Far city</city>
-        <zipCode>334234</zipCode>
-        <state>Creator</state>
-        <country>Moon</country>
-      </address>
     </patient>
   </patientsList>
 </cs.ds.domain.Patients>

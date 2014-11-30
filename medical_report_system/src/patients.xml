@@ -47,7 +47,7 @@
           </treatmentReports>
         </treatment>
         <treatment>
-          <id>1</id>
+          <id>2</id>
           <title>Severe Lungs disease</title>
           <nameofDoctor>Dr. Octopos</nameofDoctor>
           <nameOfHospital>Finest lungs hospital</nameOfHospital>
@@ -110,7 +110,7 @@
           </treatmentReports>
         </treatment>
         <treatment>
-          <id>1</id>
+          <id>2</id>
           <title>Severe Lungs disease</title>
           <nameofDoctor>Dr. Octopos</nameofDoctor>
           <nameOfHospital>Finest lungs hospital</nameOfHospital>
