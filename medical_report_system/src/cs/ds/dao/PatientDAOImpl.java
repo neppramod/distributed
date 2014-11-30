@@ -75,18 +75,20 @@ public class PatientDAOImpl extends GenericDAOImpl<Patient, Long> implements Pat
         return patients;
     }
 
-    public void writePatients(Patients patients) {
+    public void writePatients(Patients patientsObj) {
+
+
         XStream writePatientStream = new XStream();
 
         writePatientStream.alias("patient", Patient.class);
         writePatientStream.alias("treatment", Treatment.class);
-        writePatientStream.alias("patientsList", patients.getPatientsList().getClass());
+        writePatientStream.alias("patientsList", patientsObj.getPatientsList().getClass());
 
         try {
             PrintWriter out = new PrintWriter("patients.xml");
 
             System.out.println("Saving patients.xml to file");
-            out.println(writePatientStream.toXML(patients.getPatientsList()));
+            out.println(writePatientStream.toXML(patientsObj));
             out.close();
 
         } catch (Exception ex) {

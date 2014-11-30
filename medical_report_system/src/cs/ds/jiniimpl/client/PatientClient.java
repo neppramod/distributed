@@ -9,6 +9,7 @@ import java.rmi.RemoteException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -29,9 +30,20 @@ public class PatientClient implements DiscoveryListener{
     public static void main(String[] args) {
         new PatientClient();
 
+        /*
         try {
             Thread.sleep(100000L);
         } catch(InterruptedException e) {}
+        */
+
+        // Keep it running all the time, rather than exiting in 1 minute.
+        Object keepAlive = new Object();
+
+        synchronized (keepAlive) {
+            try {
+                keepAlive.wait();
+            } catch(InterruptedException e) {}
+        }
     }
 
     public PatientClient() {
@@ -127,27 +139,32 @@ public class PatientClient implements DiscoveryListener{
         patientList.setPatientsList(patientService.readPatients());
 
         while(menuChoice != 5) {
-            clientMenuText();
-            menuChoice = in.nextInt();
-            switch(menuChoice) {
-                case 1:
-                    patientService.addPatient(patientList, clientAddPatient());
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    patientService.removePatient(patientList, clientAddPatient());  //use after add, sample patient
-                    break;
-                case 4:
-                    patientService.printPatients();
-                    break;
-                case 5:
-                    System.out.println("Exiting the application.");
-                    break;
-                default:
-                    System.out.println("Invalid menu option chosen.");
+            try {
+                clientMenuText();
+                menuChoice = in.nextInt();
+                switch (menuChoice) {
+                    case 1:
+                        patientService.addPatient(patientList, clientAddPatient());
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        patientService.removePatient(patientList, clientAddPatient());  //use after add, sample patient
+                        break;
+                    case 4:
+                        patientService.printPatients();
+                        break;
+                    case 5:
+                        System.out.println("Exiting the application.");
+                        break;
+                    default:
+                        System.out.println("Invalid menu option chosen.");
+                }
+                System.out.println("");
+            }catch (InputMismatchException e) {
+                System.out.println("Sorry!! You had to enter a number. Try again. Exiting.. ");
+                break;
             }
-            System.out.println("");
         }
     }
 
