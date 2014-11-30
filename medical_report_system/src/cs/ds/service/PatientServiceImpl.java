@@ -54,4 +54,9 @@ public class PatientServiceImpl extends  GenericServiceImpl<Patient, Long> imple
     public void removePatient(Patients patients, Patient removedPatient) {
         patientDAO.removePatient(patients, removedPatient);
     }
+
+    @Override
+    public Patient findPatientById(Long id) {
+        return patientDAO.findPatientById(id);
+    }
 }

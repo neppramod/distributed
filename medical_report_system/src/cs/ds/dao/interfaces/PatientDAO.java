@@ -19,4 +19,6 @@ public interface PatientDAO extends GenericDAO<Patient, Long> {
     public void removePatient(Patients patients, Patient removedPatient);
 
     public void printPatients();
+
+    public Patient findPatientById(Long id);
 }

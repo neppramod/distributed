@@ -75,6 +75,16 @@ public class PatientDAOImpl extends GenericDAOImpl<Patient, Long> implements Pat
         return patients;
     }
 
+    public Patient findPatientById(Long id) {
+
+        for(Patient p : readPatients()) {
+            if (p.getId() == id)
+                return p;
+        }
+
+        return null;
+    }
+
     public void writePatients(Patients patientsObj) {
 
 

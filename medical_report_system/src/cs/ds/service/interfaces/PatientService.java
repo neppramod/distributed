@@ -14,4 +14,6 @@ public interface PatientService extends GenericService<Patient, Long> {
     public void addPatient(Patients patients, Patient newPatient);
     public void removePatient(Patients patients, Patient removedPatient);
     public void printPatients();
+
+    public Patient findPatientById(Long id);
 }

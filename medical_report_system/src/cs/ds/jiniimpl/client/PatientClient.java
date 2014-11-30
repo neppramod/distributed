@@ -134,6 +134,7 @@ public class PatientClient implements DiscoveryListener{
     public void clientMenu(PatientService patientService) {
         Scanner in = new Scanner(System.in);
         int menuChoice = 0;
+        Long patientId = 0L;
 
         Patients patientList = new Patients();
         patientList.setPatientsList(patientService.readPatients());
@@ -147,6 +148,8 @@ public class PatientClient implements DiscoveryListener{
                         patientService.addPatient(patientList, clientAddPatient());
                         break;
                     case 2:
+                        patientId = in.nextLong();
+                        searchAndPrintPatient(patientId);
                         break;
                     case 3:
                         patientService.removePatient(patientList, clientAddPatient());  //use after add, sample patient
@@ -165,6 +168,61 @@ public class PatientClient implements DiscoveryListener{
                 System.out.println("Sorry!! You had to enter a number. Try again. Exiting.. ");
                 break;
             }
+        }
+    }
+
+    public void searchAndPrintPatient(Long id) {
+        Patient patient = patientService.findPatientById(id);
+
+        if (patient != null) {
+            System.out.println("Information of patient with id : " + patient.getId());
+            System.out.println("Name: " + patient.getName());
+            System.out.println("Dob: " + patient.getDob());
+
+            Address addr = patient.getAddress();
+
+            System.out.println("Address: " + addr.getStreet() + ", " + addr.getAppartmentNo()
+                    + ", " + addr.getCity() + ", " + addr.getZipCode() +
+                    ", " + addr.getZipCode() + ", " + addr.getState() + ", " +
+                    addr.getCountry());
+
+            addr = patient.getDobPlace();
+            System.out.println("Address (of birth): " + addr.getStreet() + ", " + addr.getAppartmentNo()
+                    + ", " + addr.getCity() + ", " + addr.getZipCode() +
+                    ", " + addr.getZipCode() + ", " + addr.getState() + ", " +
+                    addr.getCountry());
+
+            System.out.println("SSN: " + patient.getSsn());
+            System.out.println("Phone: " + patient.getPhone());
+            System.out.println("Father's name: " + patient.getFathersName());
+            System.out.println("Mother's name: " + patient.getMothersName());
+
+
+            System.out.println("Treatment history");
+            for(Treatment t: patient.getTreatmentHistory()) {
+                System.out.println("Treatment Id: " + t.getId());
+                System.out.println("Name of doctor: " + t.getNameofDoctor());
+                System.out.println("Name of hospital: " + t.getNameOfHospital());
+
+                addr = t.getAddressOfHospital();
+
+                System.out.println("Address (of hospital): " + addr.getStreet() + ", " + addr.getAppartmentNo()
+                        + ", " + addr.getCity() + ", " + addr.getZipCode() +
+                        ", " + addr.getZipCode() + ", " + addr.getState() + ", " +
+                        addr.getCountry());
+
+                System.out.println("Date of treatment: " + t.getDateOfTreatment());
+                System.out.println("Symptoms: " + t.getSymptoms());
+                System.out.println("Description: " + t.getDescriptionOfTreatment());
+
+                System.out.print("Reports: ");
+                for(String file : t.getTreatmentReports()) {
+                    System.out.print(file + ", ");
+                }
+                System.out.println();
+            }
+        } else {
+            System.out.println("Could not find patient with id " + id);
         }
     }
 
