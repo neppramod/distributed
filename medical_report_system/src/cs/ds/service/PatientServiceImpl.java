@@ -59,4 +59,8 @@ public class PatientServiceImpl extends  GenericServiceImpl<Patient, Long> imple
     public Patient findPatientById(Long id) {
         return patientDAO.findPatientById(id);
     }
+
+    public boolean getLogin(String encryptedLoginMessage) {
+        return patientDAO.getLogin(encryptedLoginMessage);
+    }
 }

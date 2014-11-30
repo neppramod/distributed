@@ -16,4 +16,6 @@ public interface PatientService extends GenericService<Patient, Long> {
     public void printPatients();
 
     public Patient findPatientById(Long id);
+
+    public boolean getLogin(String encryptedLoginMessage);
 }

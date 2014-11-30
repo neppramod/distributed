@@ -18,6 +18,7 @@ import cs.ds.domain.Patient;
 import cs.ds.domain.Patients;
 import cs.ds.domain.Treatment;
 import cs.ds.service.interfaces.PatientService;
+import cs.ds.util.Encryption;
 import net.jini.discovery.LookupDiscovery;
 import net.jini.discovery.DiscoveryListener;
 import net.jini.discovery.DiscoveryEvent;
@@ -85,7 +86,20 @@ public class PatientClient implements DiscoveryListener{
             try {
                 System.out.println("Welcome to the Medical Records System.");
                 System.out.println("");
-                clientMenu(patientService);
+
+                Scanner in = new Scanner(System.in);
+                System.out.print("\nUsername: ");
+                String enteredUsername = in.nextLine();
+                System.out.print("\nPassword: ");
+                String enteredPassword = in.nextLine();
+
+                if (patientService.getLogin(Encryption.getMD5(enteredUsername + enteredPassword))) {
+                    //System.out.println("Welcome");
+                    clientMenu(patientService);
+                } else {
+                    System.out.println("Entered username/password does not match. Please try again");
+                }
+
             } catch(Exception ex) {
                 System.out.println("Exception in creating client menu: " + ex);
                 //continue;
