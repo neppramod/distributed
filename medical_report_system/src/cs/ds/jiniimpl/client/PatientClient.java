@@ -33,12 +33,6 @@ public class PatientClient implements DiscoveryListener{
     public static void main(String[] args) {
         new PatientClient();
 
-        /*
-        try {
-            Thread.sleep(100000L);
-        } catch(InterruptedException e) {}
-        */
-
         // Keep it running all the time, rather than exiting in 1 minute.
         Object keepAlive = new Object();
 
@@ -94,7 +88,6 @@ public class PatientClient implements DiscoveryListener{
                 String enteredPassword = in.nextLine();
 
                 if (patientService.getLogin(Encryption.getMD5(enteredUsername + enteredPassword))) {
-                    //System.out.println("Welcome");
                     clientMenu(patientService);
                 } else {
                     System.out.println("Entered username/password does not match. Please try again");
@@ -102,10 +95,9 @@ public class PatientClient implements DiscoveryListener{
 
             } catch(Exception ex) {
                 System.out.println("Exception in creating client menu: " + ex);
-                //continue;
             }
 
-            // Should I exit now or not, Have to look at this later
+
             System.exit(0);
         }
     }
