@@ -24,13 +24,14 @@ import net.jini.discovery.DiscoveryListener;
 import net.jini.discovery.DiscoveryEvent;
 import net.jini.core.lookup.ServiceRegistrar;
 import net.jini.core.lookup.ServiceTemplate;
+import static cs.ds.util.Constants.REPORT_DIR;
 
 public class PatientClient implements DiscoveryListener{
     protected PatientService patientService;
-    private final String REPORT_DIR = "/home/dell/PATIENT_REPORTS/";
     private final String SERVER_REPORT_DIR = "reports" + File.separator;
 
     public static void main(String[] args) {
+    
         new PatientClient();
 
         // Keep it running all the time, rather than exiting in 1 minute.
@@ -45,6 +46,11 @@ public class PatientClient implements DiscoveryListener{
 
     public PatientClient() {
         System.setSecurityManager(new RMISecurityManager());
+        
+        // Setup the PATIENT_RECORDS directory (if there is none)
+        File reportDir = new File(REPORT_DIR);
+            if (!reportDir.exists())
+                reportDir.mkdir();
 
         LookupDiscovery discover = null;
 
