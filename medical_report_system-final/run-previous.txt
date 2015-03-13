@@ -1,0 +1,39 @@
+1. For dataservice jar (from inside out/production directory if using intellij)
+$ jar cf data_service-dl.jar cs/ds/dao/ cs/ds/domain/  
+
+1.a Jini
+
+
+2. Server (Data) From inside out/production outside cs
+
+$ java -Djava.rmi.server.codebase=http://localhost:8080/data_service-dl.jar -Djava.security.policy=../../../all_rmi_lib/jsk-all.policy cs/ds/jiniimpl/dataservice/DataServiceServer
+
+
+
+3. Client
+
+ClientServiceServer: Look service found
+Returning patient
+Patient: Id: 1, Name: Harry Potter
+
+
+
+Or in Terminals
+
+1. HTTP Server
+java -jar lib/tools.jar -port 8080 -dir host_this/ -verbose
+
+2. RMID
+rmid
+
+3. JINI
+cd ~/ds/final_project/src/git_ds_jini/medical_report_system/
+java -Djava.security.policy=all_rmi_lib/jsk-all.policy -jar all_rmi_lib/start.jar all_rmi_lib/start-transient-reggie.config
+
+4. Server
+cd ~/ds/final_project/src/git_ds_jini/medical_report_system/out/production/medical_report_system/
+java -Djava.rmi.server.codebase=http://localhost:8080/data_service-dl.jar -Djava.security.policy=../../../all_rmi_lib/jsk-all.policy cs/ds/jiniimpl/dataservice/DataServiceServer
+
+5. Client
+cd ~/ds/final_project/src/git_ds_jini/medical_report_system/out/production/medical_report_system/
+java -Djava.security.policy=../../../all_rmi_lib/jsk-all.policy cs/ds/jiniimpl/clientservice/ClientServiceServer
