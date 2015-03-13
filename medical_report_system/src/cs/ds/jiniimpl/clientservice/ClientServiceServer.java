@@ -24,13 +24,7 @@ public class ClientServiceServer implements DiscoveryListener, LeaseListener {
     public static void main(String[] args) {
         ClientServiceServer s = new ClientServiceServer();
 
-        // Act also as client
-        try {
-            Thread.sleep(100000L);
-        } catch(InterruptedException e) {}
-
         // This is for service
-
         Object keepAlive = new Object();
 
         // Keep this server running
@@ -72,19 +66,6 @@ public class ClientServiceServer implements DiscoveryListener, LeaseListener {
                 System.out.println("ClientServiceServer: PatientDAO null");
                 continue;
             }
-
-
-            /*
-            try {
-                System.out.println("ClientServiceServer: Patient: " + patientDAO.findById(1L));
-
-            } catch (RemoteException e) {
-                e.printStackTrace();
-                continue;
-            }
-            */
-
-            // Should I exit now or not, Have to look at this later
 
             if (patientDAO != null) {
                 System.out.println("Found patientDAO. Good to go !!");

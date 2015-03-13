@@ -18,25 +18,21 @@ import cs.ds.domain.Patient;
 import cs.ds.domain.Patients;
 import cs.ds.domain.Treatment;
 import cs.ds.service.interfaces.PatientService;
+import cs.ds.util.Encryption;
 import net.jini.discovery.LookupDiscovery;
 import net.jini.discovery.DiscoveryListener;
 import net.jini.discovery.DiscoveryEvent;
 import net.jini.core.lookup.ServiceRegistrar;
 import net.jini.core.lookup.ServiceTemplate;
+import static cs.ds.util.Constants.REPORT_DIR;
 
 public class PatientClient implements DiscoveryListener{
     protected PatientService patientService;
-    private final String REPORT_DIR = "/home/dell/PATIENT_REPORTS/";
     private final String SERVER_REPORT_DIR = "reports" + File.separator;
 
     public static void main(String[] args) {
+    
         new PatientClient();
-
-        /*
-        try {
-            Thread.sleep(100000L);
-        } catch(InterruptedException e) {}
-        */
 
         // Keep it running all the time, rather than exiting in 1 minute.
         Object keepAlive = new Object();
@@ -50,6 +46,11 @@ public class PatientClient implements DiscoveryListener{
 
     public PatientClient() {
         System.setSecurityManager(new RMISecurityManager());
+        
+        // Setup the PATIENT_RECORDS directory (if there is none)
+        File reportDir = new File(REPORT_DIR);
+            if (!reportDir.exists())
+                reportDir.mkdir();
 
         LookupDiscovery discover = null;
 
@@ -85,13 +86,24 @@ public class PatientClient implements DiscoveryListener{
             try {
                 System.out.println("Welcome to the Medical Records System.");
                 System.out.println("");
-                clientMenu(patientService);
+
+                Scanner in = new Scanner(System.in);
+                System.out.print("\nUsername: ");
+                String enteredUsername = in.nextLine();
+                System.out.print("\nPassword: ");
+                String enteredPassword = in.nextLine();
+
+                if (patientService.getLogin(Encryption.getMD5(enteredUsername + enteredPassword))) {
+                    clientMenu(patientService);
+                } else {
+                    System.out.println("Entered username/password does not match. Please try again");
+                }
+
             } catch(Exception ex) {
                 System.out.println("Exception in creating client menu: " + ex);
-                //continue;
             }
 
-            // Should I exit now or not, Have to look at this later
+
             System.exit(0);
         }
     }

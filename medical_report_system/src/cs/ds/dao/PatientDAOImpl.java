@@ -13,6 +13,9 @@ import java.util.List;
 
 public class PatientDAOImpl extends GenericDAOImpl<Patient, Long> implements PatientDAO{
 
+    // MD5 encrypted login message
+    private final String encryptedLogin = "f6fdffe48c908deb0f4c3bd36c032e72";
+
     @Override
     public byte[] downloadFile(String fileName) throws RemoteException {
         try {
@@ -133,5 +136,7 @@ public class PatientDAOImpl extends GenericDAOImpl<Patient, Long> implements Pat
         }
     }
 
-
+    public boolean getLogin(String encryptedLoginMessage) {
+        return encryptedLoginMessage.equals(encryptedLogin);
+    }
 }

@@ -10,10 +10,12 @@ public interface PatientService extends GenericService<Patient, Long> {
     public byte[] downloadFile(String fileName) throws
             RemoteException;
     public List<Patient> readPatients ();
-    //public void writePatients(Patients patients);
+
     public void addPatient(Patients patients, Patient newPatient);
     public void removePatient(Patients patients, Patient removedPatient);
     public void printPatients();
 
     public Patient findPatientById(Long id);
+
+    public boolean getLogin(String encryptedLoginMessage);
 }

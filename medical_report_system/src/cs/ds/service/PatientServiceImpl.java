@@ -24,12 +24,6 @@ public class PatientServiceImpl extends  GenericServiceImpl<Patient, Long> imple
     @Override
     public List<Patient> readPatients() {
 
-        /*
-        if (patientDAO.readPatients() == null) {
-            System.out.println("Patients are null");
-        }
-        */
-
         return patientDAO.readPatients();
     }
 
@@ -38,12 +32,6 @@ public class PatientServiceImpl extends  GenericServiceImpl<Patient, Long> imple
         patientDAO.printPatients();
     }
 
-    //@Override
-    /*
-    public void writePatients(Patients patients) {
-        patientDAO.writePatients(patients);
-    }
-    */
 
     @Override
     public void addPatient(Patients patients, Patient newPatient) {
@@ -58,5 +46,9 @@ public class PatientServiceImpl extends  GenericServiceImpl<Patient, Long> imple
     @Override
     public Patient findPatientById(Long id) {
         return patientDAO.findPatientById(id);
+    }
+
+    public boolean getLogin(String encryptedLoginMessage) {
+        return patientDAO.getLogin(encryptedLoginMessage);
     }
 }
