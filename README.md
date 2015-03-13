@@ -1,5 +1,6 @@
- Introduction
- ============
+ # Introduction 
+ 
+ 
  A distributed medical record system using JINI. Source code compiled in java 8, should run on Apache River Library.
  
  For simplicity, model data is stored statically.
