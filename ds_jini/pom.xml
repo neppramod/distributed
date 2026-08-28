@@ -17,7 +17,7 @@
 		<hibernate.version>5.4.24.Final</hibernate.version>
 		<hibernate-validator.version>6.0.23.Final</hibernate-validator.version>
 		<mysql.version>5.1.14</mysql.version>
-		<jetty.version>9.4.51.v20230217</jetty.version>
+		<jetty.version>9.4.55.v20240627</jetty.version>
 		<hsqldb.version>2.0.0</hsqldb.version>
 	</properties>
 
